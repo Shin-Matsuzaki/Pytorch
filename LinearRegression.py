@@ -1,15 +1,6 @@
-from typing import Tuple
-import matplotlib.pyplot as plt
-
 import torch
 
-
-# Type Hint
-def prepare_data(N: int, w_true: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
-    X = torch.cat([torch.ones(N, 1), torch.randn(N, 2)], dim=1)
-    y = torch.mv(X, w_true) + torch.randn(N) * 0.5
-
-    return X, y
+from util import prepare_data, plot_loss
 
 
 def main():
@@ -40,12 +31,7 @@ def main():
         w.data = w - learning_rate * w.grad.data
         print(f'Epoch{epoch}: loss={loss.item():.4f} w={w.data} dL/dw={w.grad.data}')
 
-    plt.plot(y)
-    plt.plot(torch.mv(X, w).detach().numpy())
-    # plt.plot(range(1, num_epochs+1), loss_list)
-    # plt.xlabel('Epoch')
-    # plt.ylabel('MSE_Loss')
-    plt.show()
+    plot_loss(loss_list)
 
 
 if __name__ == '__main__':
